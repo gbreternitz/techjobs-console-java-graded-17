@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * Created by LaunchCode
@@ -42,6 +43,7 @@ public class JobData {
             }
         }
 
+        Collections.sort(values); //return type is void, so just call it and it changes the original value
         return values;
     }
 
@@ -50,7 +52,15 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        return allJobs;
+        //bonus mission - return cloned allJobs property
+        ArrayList<HashMap<String, String>> clonedAllJobs = new ArrayList<>();
+        Iterator<HashMap<String, String>> iterator = allJobs.iterator();
+
+        while(iterator.hasNext()){
+            clonedAllJobs.add(iterator.next());
+        }
+
+        return clonedAllJobs;
     }
 
     /**
@@ -75,7 +85,7 @@ public class JobData {
 
             String aValue = row.get(column);
 
-            if (aValue.contains(value)) {
+            if (aValue.toLowerCase().contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
@@ -94,8 +104,20 @@ public class JobData {
         // load data, if not already loaded
         loadData();
 
-        // TODO - implement this method
-        return null;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            for ( String column : row.keySet()) {
+                String aValue = row.get(column);
+
+                if (aValue.toLowerCase().contains(value.toLowerCase())) {
+                    jobs.add(row);
+                    break;
+                }
+            }
+        }
+
+        return jobs;
     }
 
     /**
